@@ -1,0 +1,14 @@
+{
+  "name": "mailer",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-mailjet": "^5.1.1"
+  },
+  "scripts": {
+    "serve": "npx nodemon index.js",
+    "start": "node index.js"
+  }
+}
