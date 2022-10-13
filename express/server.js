@@ -4,6 +4,7 @@ const path = require("path");
 const serverless = require("serverless-http");
 const bodyParser = require("body-parser");
 const mailjet = require("node-mailjet");
+const cors = require('cors')
 
 const app = express();
 const router = express.Router();
@@ -73,6 +74,7 @@ router.get("/status", function (req, res) {
   res.send({ message: "Server is hot and live!" });
 });
 
+app.use(cors())
 app.use(bodyParser.json());
 app.use("/.netlify/functions/server", router); // path must route to lambda
 app.use("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
