@@ -1,11 +1,17 @@
-const express = require("express");
-const mailjet = require("node-mailjet");
+'use strict';
+const express = require('express');
+const path = require('path');
+const serverless = require('serverless-http');
 const app = express();
-const port = process.env.PORT || 5000;
+const bodyParser = require('body-parser');
 
-app.use(express.json());
-
-app.post("/mailjet", (req, res) => {
+const router = express.Router();
+router.get('/', (req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  res.write('<h1>Hello from Express.js!</h1>');
+  res.end();
+});
+router.post("/mailjet", (req, res) => {
   console.log(req.body);
 
   let privateKey = req.headers["private-key"];
@@ -49,10 +55,13 @@ app.post("/mailjet", (req, res) => {
     });
 });
 
-app.get("/", function (req, res) {
+router.get("/status", function (req, res) {
   res.send({ message: "Server is hot and live!" });
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+app.use(bodyParser.json());
+app.use('/.netlify/functions/server', router);  // path must route to lambda
+app.use('/', (req, res) => res.sendFile(path.join(__dirname, '../index.html')));
+
+module.exports = app;
+module.exports.handler = serverless(app);
