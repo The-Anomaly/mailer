@@ -75,7 +75,7 @@ router.get("/status", function (req, res) {
 });
 
 app.use(cors())
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '15mb', extended: true}));
 app.use("/.netlify/functions/server", router); // path must route to lambda
 app.use("/", (req, res) => res.sendFile(path.join(__dirname, "../index.html")));
 
